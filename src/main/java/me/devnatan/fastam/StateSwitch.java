@@ -1,6 +1,6 @@
 package me.devnatan.fastam;
 
-import com.sun.istack.internal.NotNull;
+import java.util.Objects;
 
 /**
  * Not all situations can be easily modeled using a StateSeries, for example a game's menus.
@@ -31,7 +31,8 @@ public final class StateSwitch {
         return state;
     }
 
-    public void changeState(@NotNull State next) {
+    public void changeState(State next) {
+        Objects.requireNonNull(next);
         if (state != null)
             state.end();
         state = next;

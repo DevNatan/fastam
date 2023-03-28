@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.danilopianini.publish-on-central' version '3.4.0'
 }
 
 group = 'me.devnatan'
@@ -9,11 +10,24 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
 test {
     useJUnitPlatform()
+}
+
+def isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
+publishOnCentral {
+    projectUrl = "https://github.com/DevNatan/fastam"
+    scmConnection = "git:git@github.com:DevNatan/fastam"
+
+
+    if (!isReleaseVersion)
+        mavenCentralSnapshotsRepository()
+}
+
+signing {
+    required = isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives")
+    useInMemoryPgpKeys(
+            System.getenv("OSSRH_SIGNING_KEY"),
+            System.getenv("OSSRH_SIGNING_PASSWORD")
+    )
 }
