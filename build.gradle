@@ -16,9 +16,10 @@ test {
 
 def isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
 publishOnCentral {
-    projectUrl = "https://github.com/DevNatan/fastam"
-    scmConnection = "git:git@github.com:DevNatan/fastam"
-
+    projectUrl.set("https://github.com/DevNatan/fastam")
+    scmConnection.set("git:git@github.com:DevNatan/fastam")
+    mavenCentral.user.set(System.getenv("OSSRH_USERNAME"))
+    mavenCentral.password.set(provider { System.getenv("OSSRH_PASSWORD") })
 
     if (!isReleaseVersion)
         mavenCentralSnapshotsRepository()
